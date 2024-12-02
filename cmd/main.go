@@ -17,13 +17,10 @@ func main() {
 		panic(err)
 	}
 
-	//Camada de Repository
 	ProductRepository := repository.NewProductRepository(dbConnection)
 
-	//Camada de UseCase
 	ProductUsecase := usecase.NewProductUsecase(ProductRepository)
 
-	//Camada de Controllers
 	ProductController := controller.NewProductController(ProductUsecase)
 
 	server.GET("/ping", func(c *gin.Context) {
@@ -31,8 +28,8 @@ func main() {
 			"message": "pong",
 		})
 	})
-
 	server.GET("/products", ProductController.GetProducts)
+	server.POST("/products", ProductController.CreateProduct)
 
 	server.Run(":8080")
 }
