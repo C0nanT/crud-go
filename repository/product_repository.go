@@ -83,3 +83,60 @@ func (pr *ProductRepository) GetProductById(id int) (*model.Product, error) {
 	query.Close()
 	return &product, nil
 }
+
+func (pr *ProductRepository) DeleteProduct(id int) error {
+	query, err := pr.connection.Prepare("DELETE FROM products WHERE id = $1")
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	defer query.Close()
+
+	result, err := query.Exec(id)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	rowsAffected, _ := result.RowsAffected() 
+	if rowsAffected == 0 {
+		fmt.Println("ID not found")
+		return nil
+	}
+
+	fmt.Println("Product deleted")
+	return nil
+}
+
+func (pr *ProductRepository) UpdateProduct(id int, product model.Product) error {
+	query, err := pr.connection.Prepare("UPDATE products SET name = $1, price = $2 WHERE id = $3")
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	
+	defer query.Close() 
+
+	result, err := query.Exec(product.Name, product.Price, id)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	if rowsAffected == 0 {
+		fmt.Println("ID not found, no product updated")
+		return nil
+	}
+
+	fmt.Println("Product updated")
+	return nil
+}
+
+

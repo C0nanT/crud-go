@@ -29,9 +29,13 @@ func main() {
 		})
 	})
 	server.GET("/products", ProductController.GetProducts)
-	server.GET("/products/:id", ProductController.GetProductById)
+	server.GET("/product/:id", ProductController.GetProductById)
 
-	server.POST("/products", ProductController.CreateProduct)
+	server.POST("/product", ProductController.CreateProduct)
+	
+	server.DELETE("/product/:id", ProductController.DeleteProduct)
+
+	server.PUT("/product/:id", ProductController.UpdateProduct)
 	
 	server.Run(":8080")
 }
