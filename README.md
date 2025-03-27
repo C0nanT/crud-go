@@ -5,5 +5,3 @@ Este é um projeto de API CRUD (Create, Read, Update, Delete) desenvolvido em Go
 ### Pré-requisitos
 
 - Docker
-- Docker Compose
-
